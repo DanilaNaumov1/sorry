@@ -6,11 +6,7 @@
     <title>Приглашение на свидание ❤️</title>
     <style>
         /* --- ОБЩИЕ СТИЛИ --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #feada6 100%);
@@ -21,7 +17,6 @@
             overflow: hidden;
             position: relative;
         }
-        /* Декоративные пятнышки на фоне */
         body::before, body::after {
             content: '';
             position: absolute;
@@ -32,13 +27,7 @@
         body::before { width: 300px; height: 300px; top: -100px; left: -100px; }
         body::after { width: 400px; height: 400px; bottom: -150px; right: -150px; }
 
-        .container {
-            width: 100%;
-            max-width: 420px;
-            padding: 20px;
-            position: relative;
-            z-index: 10;
-        }
+        .container { width: 100%; max-width: 420px; padding: 20px; position: relative; z-index: 10; }
 
         .card {
             background: rgba(255, 255, 255, 0.25);
@@ -49,201 +38,91 @@
             padding: 30px 20px;
             text-align: center;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            display: none; /* Скрываем все экраны по умолчанию */
+            display: none;
             animation: fadeIn 0.5s ease forwards;
         }
-        .card.active {
-            display: block;
-        }
+        .card.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h2 {
-            color: #fff;
-            font-size: 22px;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            line-height: 1.3;
+        h2 { color: #fff; font-size: 22px; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1.3; }
+        p.subtitle { color: rgba(255, 255, 255, 0.9); font-size: 14px; margin-bottom: 20px; }
+
+        /* --- АНИМАЦИЯ СЕРДЕЧКА --- */
+        .heart-container {
+            font-size: 90px;
+            margin: 20px auto;
+            display: inline-block;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: drop-shadow(0 5px 15px rgba(255, 0, 0, 0.3));
         }
-        
-        p.subtitle {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            margin-bottom: 20px;
+        .heart-container.holding {
+            transform: scale(1.3);
+            filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.8));
+            transition: all 1.5s ease;
+        }
+        .heart-container.held {
+            animation: pulse 0.5s ease;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1.3); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1.3); }
         }
 
-        .icon-placeholder {
-            font-size: 80px;
-            margin: 20px 0;
-            display: inline-block;
-            animation: float 3s ease-in-out infinite;
-        }
-        /* ЗАМЕНИТЕ ЭМОДЗИ НА КАРТИНКУ: 
-           Вместо <div class="icon-placeholder">❤️</div> 
-           вставьте <img src="ваша-картинка.png" style="width: 150px;"> */
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+        .icon-placeholder { font-size: 80px; margin: 20px 0; display: inline-block; animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
         button {
-            background: #fff;
-            color: #ff6b6b;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            margin: 10px 5px;
-            font-family: inherit;
+            background: #fff; color: #ff6b6b; border: none; padding: 15px 30px; border-radius: 50px;
+            font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease; margin: 10px 5px; font-family: inherit;
         }
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-        button:active {
-            transform: scale(0.95);
-        }
+        button:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        button:active { transform: scale(0.95); }
 
         /* Кнопки выбора даты */
-        .date-options {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .date-options button {
-            flex: 1;
-            padding: 15px 10px;
-            font-size: 14px;
-            line-height: 1.5;
-            background: rgba(255, 255, 255, 0.6);
-            color: #d6336c;
-        }
-        .date-options button.selected {
-            background: #ff6b6b;
-            color: #fff;
-            transform: scale(1.05);
-        }
-        .date-options button span {
-            font-size: 12px;
-            font-weight: normal;
-            display: block;
-            margin-top: 5px;
-        }
+        .date-options { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+        .date-options button { flex: 1; padding: 15px 10px; font-size: 14px; line-height: 1.5; background: rgba(255, 255, 255, 0.6); color: #d6336c; }
+        .date-options button.selected { background: #ff6b6b; color: #fff; transform: scale(1.05); }
+        .date-options button span { font-size: 12px; font-weight: normal; display: block; margin-top: 5px; }
 
-        /* Поле времени */
         input[type="time"] {
-            width: 80%;
-            padding: 15px;
-            border-radius: 50px;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.4);
-            font-size: 16px;
-            color: #d6336c;
-            text-align: center;
-            font-family: inherit;
-            margin-bottom: 20px;
-            outline: none;
+            width: 80%; padding: 15px; border-radius: 50px; border: 2px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.4); font-size: 16px; color: #d6336c; text-align: center;
+            font-family: inherit; margin-bottom: 20px; outline: none;
         }
-        input[type="time"]::-webkit-calendar-picker-indicator {
-            filter: invert(40%) sepia(80%) saturate(500%) hue-rotate(300deg);
-            cursor: pointer;
-        }
+        input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(40%) sepia(80%) saturate(500%) hue-rotate(300deg); cursor: pointer; }
 
         /* Сетка активностей */
-        .activities-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+        .activities-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .activity-btn {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
-            padding: 15px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
+            background: rgba(255, 255, 255, 0.5); border-radius: 20px; padding: 15px 10px;
+            display: flex; flex-direction: column; align-items: center; cursor: pointer;
+            transition: all 0.3s ease; border: 2px solid transparent;
         }
-        .activity-btn.selected {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: #ff6b6b;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
-        }
-        .activity-btn .emoji {
-            font-size: 30px;
-            margin-bottom: 5px;
-        }
-        .activity-btn .name {
-            color: #d6336c;
-            font-size: 13px;
-            font-weight: bold;
-        }
+        .activity-btn.selected { background: rgba(255, 255, 255, 0.9); border-color: #ff6b6b; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3); }
+        .activity-btn .emoji { font-size: 30px; margin-bottom: 5px; }
+        .activity-btn .name { color: #d6336c; font-size: 13px; font-weight: bold; }
 
         /* Финальный экран */
-        .summary-box {
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .summary-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            color: #d6336c;
-            font-size: 15px;
-        }
+        .summary-box { background: rgba(255, 255, 255, 0.4); border-radius: 20px; padding: 15px; margin-bottom: 20px; text-align: left; }
+        .summary-row { display: flex; align-items: center; margin-bottom: 10px; color: #d6336c; font-size: 15px; }
         .summary-row:last-child { margin-bottom: 0; }
-        .summary-row .label {
-            font-weight: bold;
-            margin-right: 10px;
-            font-size: 18px;
-        }
+        .summary-row .label { font-weight: bold; margin-right: 10px; font-size: 18px; }
 
-        /* Таймер */
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .countdown-item {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 15px;
-            padding: 10px;
-            min-width: 60px;
-            color: #d6336c;
-        }
-        .countdown-item .num {
-            font-size: 24px;
-            font-weight: bold;
-            display: block;
-        }
-        .countdown-item .text {
-            font-size: 10px;
-            text-transform: uppercase;
-        }
+        .countdown { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .countdown-item { background: rgba(255, 255, 255, 0.5); border-radius: 15px; padding: 10px; min-width: 60px; color: #d6336c; }
+        .countdown-item .num { font-size: 24px; font-weight: bold; display: block; }
+        .countdown-item .text { font-size: 10px; text-transform: uppercase; }
 
-        /* Кнопка "Нет", которая убегает */
-        #noBtn {
-            position: absolute;
-            transition: all 0.2s ease;
-            z-index: 100;
-        }
+        #noBtn { position: absolute; transition: all 0.2s ease; z-index: 100; }
+        #emailStatus { color: #fff; margin-top: 15px; font-size: 13px; font-style: italic; opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -253,16 +132,15 @@
         <div class="card active" id="screen1">
             <h2>Всё начинается с тепла</h2>
             <p class="subtitle">Коснись сердечка и подержи</p>
-            <!-- ЗАМЕНИТЕ НА КАРТИНКУ/ГИФКУ -->
-            <div class="icon-placeholder">❤️</div>
+            
+            <div class="heart-container" id="heartBtn">❤️</div>
             <br>
-            <button onclick="nextScreen(2)">Открыть приглашение →</button>
+            <button onclick="nextScreen(2)" style="margin-top: 20px; font-size: 14px; padding: 10px 20px; background: rgba(255,255,255,0.5); color: #d6336c;">Открыть приглашение →</button>
         </div>
 
         <!-- ЭКРАН 2: Приглашение -->
         <div class="card" id="screen2">
             <h2>Пойдёшь со мной на свидание? 💌</h2>
-            <!-- ЗАМЕНИТЕ НА КАРТИНКУ/ГИФКУ -->
             <div class="icon-placeholder">🐻</div>
             <div style="position: relative; height: 60px;">
                 <button onclick="nextScreen(3)" style="position: absolute; left: 20%;">Да! 😊</button>
@@ -274,7 +152,6 @@
         <div class="card" id="screen3">
             <h2>Подожди, ты действительно сказала «да»? 😳</h2>
             <p class="subtitle">А я так волновалась 😅</p>
-            <!-- ЗАМЕНИТЕ НА КАРТИНКУ/ГИФКУ -->
             <div class="icon-placeholder">🐱</div>
             <button onclick="nextScreen(4)">Да, да, ДА!</button>
         </div>
@@ -295,11 +172,8 @@
         <div class="card" id="screen5">
             <h2>Чем займёмся? 😉</h2>
             <p class="subtitle">Выбирай, что по душе</p>
-            <!-- ЗАМЕНИТЕ НА КАРТИНКУ/ГИФКУ -->
             <div class="icon-placeholder">🐱🐻</div>
-            <div class="activities-grid" id="activitiesGrid">
-                <!-- Заполняется через JS -->
-            </div>
+            <div class="activities-grid" id="activitiesGrid"></div>
             <button onclick="saveActivity()">Далее →</button>
         </div>
 
@@ -320,8 +194,7 @@
                 <div class="summary-row"><span class="label">🎯</span> <span id="summaryActivity">...</span></div>
             </div>
 
-            <button onclick="sendEmail()" id="sendBtn">Отправить подтверждение 💌</button>
-            <p id="emailStatus" style="color: #fff; margin-top: 10px; font-size: 12px;"></p>
+            <p id="emailStatus">Отправка...</p>
         </div>
     </div>
 
@@ -342,7 +215,7 @@
         // 1. Зарегистрируйся на https://formspree.io/
         // 2. Создай New Form, укажи свою почту
         // 3. Скопируй ID формы (например, xleqjvzw) и вставь ниже вместо 'YOUR_FORM_ID'
-        const FORMSPREE_ID = 'YOUR_FORM_ID'; 
+        const FORMSPREE_ID = 'xyekplyg'; 
         const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
 
         // ==========================================
@@ -350,23 +223,23 @@
         // ==========================================
         let selectedDay = '';
         let selectedDateFormatted = '';
+        let selectedDateObj = null;
         let selectedTime = '';
         let selectedActivity = null;
         let countdownInterval;
+        let emailSent = false;
 
         // 1. Вычисление ближайших выходных
         function calculateWeekendDates() {
             const today = new Date();
             const dayOfWeek = today.getDay(); // 0 - Вс, 6 - Сб
 
-            // Ближайшая суббота
             let daysUntilSat = 6 - dayOfWeek;
             if (daysUntilSat <= 0) daysUntilSat += 7;
             
-            // Ближайшее воскресенье
             let daysUntilSun = 7 - dayOfWeek;
-            if (dayOfWeek === 0) daysUntilSun = 0; // Если сегодня воскресенье
-            else if (dayOfWeek === 6) daysUntilSun = 1; // Если сегодня суббота
+            if (dayOfWeek === 0) daysUntilSun = 0;
+            else if (dayOfWeek === 6) daysUntilSun = 1;
 
             const satDate = new Date(today);
             satDate.setDate(today.getDate() + daysUntilSat);
@@ -379,7 +252,6 @@
             document.getElementById('satDate').innerText = satDate.toLocaleDateString('ru-RU', options);
             document.getElementById('sunDate').innerText = sunDate.toLocaleDateString('ru-RU', options);
             
-            // Сохраняем полные даты для дальнейшего использования
             window.satDateFull = satDate;
             window.sunDateFull = sunDate;
         }
@@ -390,13 +262,38 @@
             document.getElementById('screen' + screenNumber).classList.add('active');
         }
 
-        // 3. Убегающая кнопка "Нет"
+        // 3. Логика удержания сердечка
+        const heartBtn = document.getElementById('heartBtn');
+        let holdTimer;
+
+        heartBtn.addEventListener('mousedown', startHold);
+        heartBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startHold(); });
+        
+        heartBtn.addEventListener('mouseup', cancelHold);
+        heartBtn.addEventListener('mouseleave', cancelHold);
+        heartBtn.addEventListener('touchend', cancelHold);
+
+        function startHold() {
+            heartBtn.classList.add('holding');
+            holdTimer = setTimeout(() => {
+                heartBtn.classList.remove('holding');
+                heartBtn.classList.add('held');
+                nextScreen(2);
+                setTimeout(() => heartBtn.classList.remove('held'), 500);
+            }, 1500); // 1.5 секунды удержания
+        }
+
+        function cancelHold() {
+            clearTimeout(holdTimer);
+            heartBtn.classList.remove('holding');
+        }
+
+        // 4. Убегающая кнопка "Нет"
         function runAway() {
             const btn = document.getElementById('noBtn');
             const container = document.getElementById('screen2');
             const containerRect = container.getBoundingClientRect();
             
-            // Случайные координаты в пределах карточки
             const randomX = Math.random() * (containerRect.width - 100);
             const randomY = Math.random() * (containerRect.height - 100);
             
@@ -405,7 +302,7 @@
             btn.style.top = randomY + 'px';
         }
 
-        // 4. Выбор дня
+        // 5. Выбор дня
         function selectDay(day) {
             selectedDay = day;
             document.getElementById('satBtn').classList.remove('selected');
@@ -413,29 +310,25 @@
             
             if (day === 'Суббота') {
                 document.getElementById('satBtn').classList.add('selected');
+                selectedDateObj = window.satDateFull;
                 selectedDateFormatted = window.satDateFull.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
             } else {
                 document.getElementById('sunBtn').classList.add('selected');
+                selectedDateObj = window.sunDateFull;
                 selectedDateFormatted = window.sunDateFull.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
             }
         }
 
-        // 5. Сохранение даты и времени
+        // 6. Сохранение даты и времени
         function saveDateTime() {
             const timeVal = document.getElementById('timeInput').value;
-            if (!selectedDay) {
-                alert('Пожалуйста, выбери день (Суббота или Воскресенье)!');
-                return;
-            }
-            if (!timeVal) {
-                alert('Пожалуйста, укажи время!');
-                return;
-            }
+            if (!selectedDay) { alert('Пожалуйста, выбери день (Суббота или Воскресенье)!'); return; }
+            if (!timeVal) { alert('Пожалуйста, укажи время!'); return; }
             selectedTime = timeVal;
             nextScreen(5);
         }
 
-        // 6. Отрисовка активностей
+        // 7. Отрисовка активностей
         function renderActivities() {
             const grid = document.getElementById('activitiesGrid');
             grid.innerHTML = '';
@@ -452,18 +345,21 @@
             });
         }
 
-        // 7. Сохранение активности и переход к итогу
+        // 8. Сохранение активности и переход к итогу
         function saveActivity() {
-            if (!selectedActivity) {
-                alert('Пожалуйста, выбери, чем займёмся!');
-                return;
-            }
+            if (!selectedActivity) { alert('Пожалуйста, выбери, чем займёмся!'); return; }
             nextScreen(6);
             showSummary();
             startCountdown();
+            
+            // Автоматическая отправка письма
+            if (!emailSent) {
+                sendEmail();
+                emailSent = true;
+            }
         }
 
-        // 8. Отображение итога
+        // 9. Отображение итога
         function showSummary() {
             document.getElementById('summaryDate').innerText = selectedDateFormatted;
             document.getElementById('summaryTime').innerText = selectedTime;
@@ -471,12 +367,12 @@
             document.getElementById('finalSubtitle').innerText = `Жду тебя ${selectedDay.toLowerCase()}! Нас ждет ${selectedActivity.name} ${selectedActivity.icon}`;
         }
 
-        // 9. Таймер обратного отсчёта
+        // 10. Таймер обратного отсчёта (ИСПРАВЛЕНО)
         function startCountdown() {
             if (countdownInterval) clearInterval(countdownInterval);
             
-            // Собираем дату в формате YYYY-MM-DDTHH:MM
-            let targetDate = new Date(selectedDateFormatted);
+            // Используем сохраненный объект даты, а не строку!
+            let targetDate = new Date(selectedDateObj);
             const [hours, minutes] = selectedTime.split(':');
             targetDate.setHours(hours, minutes, 0, 0);
 
@@ -502,9 +398,8 @@
             }, 1000);
         }
 
-        // 10. Отправка на почту через Formspree
+        // 11. Автоматическая отправка на почту через Formspree
         async function sendEmail() {
-            const btn = document.getElementById('sendBtn');
             const status = document.getElementById('emailStatus');
             
             if (FORMSPREE_ID === 'YOUR_FORM_ID') {
@@ -513,17 +408,13 @@
                 return;
             }
 
-            btn.disabled = true;
-            btn.innerText = 'Отправка...';
-            status.innerText = '';
+            status.innerText = 'Отправка...';
+            status.style.color = '#fff';
 
             try {
                 const response = await fetch(FORMSPREE_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify({
                         _subject: "💖 Новое приглашение на свидание!",
                         "День": selectedDay,
@@ -536,15 +427,12 @@
                 if (response.ok) {
                     status.innerText = '✅ Успешно отправлено! Я всё получил(а).';
                     status.style.color = '#c8e6c9';
-                    btn.innerText = 'Отправлено ✅';
                 } else {
                     throw new Error('Ошибка отправки');
                 }
             } catch (error) {
-                status.innerText = '❌ Ошибка. Проверьте интернет или настройки Formspree.';
+                status.innerText = '❌ Ошибка сети. Проверьте интернет.';
                 status.style.color = '#ffcccc';
-                btn.disabled = false;
-                btn.innerText = 'Попробовать снова';
             }
         }
 
