@@ -158,7 +158,7 @@
         <!-- ЭКРАН 3: Подтверждение -->
         <div class="card" id="screen3">
             <h2>Подожди, ты действительно сказала «да»? 😳</h2>
-            <p class="subtitle">А я так волновалась 😅</p>
+            <p class="subtitle">А я так волновался 😅</p>
             <img src="peach-goma-peach-and-goma.gif" alt="Пич и Гома" class="sticker-img">
             <button onclick="nextScreen(4)">Да, да, ДА!</button>
         </div>
@@ -374,7 +374,7 @@
             document.getElementById('summaryDate').innerText = selectedDateFormatted;
             document.getElementById('summaryTime').innerText = selectedTime;
             document.getElementById('summaryActivity').innerText = selectedActivity.name;
-            document.getElementById('finalSubtitle').innerText = `Жду тебя ${selectedDay.toLowerCase()}! Нас ждет ${selectedActivity.name} ${selectedActivity.icon}`;
+            document.getElementById('finalSubtitle').innerText = `Жду тебя в "${selectedDay.toLowerCase()}"! Нас ждет ${selectedActivity.name} ${selectedActivity.icon}`;
         }
 
         // 10. Таймер обратного отсчёта
@@ -434,7 +434,7 @@
                 });
 
                 if (response.ok) {
-                    status.innerText = '✅ Успешно отправлено! Я всё получил(а).';
+                    status.innerText = '✅ Успешно отправлено! Я всё получил.';
                     status.style.color = '#c8e6c9';
                 } else {
                     throw new Error('Ошибка отправки');
