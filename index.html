@@ -51,6 +51,16 @@
         h2 { color: #fff; font-size: 22px; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1.3; }
         p.subtitle { color: rgba(255, 255, 255, 0.9); font-size: 14px; margin-bottom: 20px; }
 
+        /* --- СТИЛИ ДЛЯ ГИФОК --- */
+        .sticker-img {
+            width: 140px;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 15px;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+        }
+
         /* --- АНИМАЦИЯ СЕРДЕЧКА --- */
         .heart-container {
             font-size: 90px;
@@ -74,9 +84,6 @@
             50% { transform: scale(1.5); }
             100% { transform: scale(1.3); }
         }
-
-        .icon-placeholder { font-size: 80px; margin: 20px 0; display: inline-block; animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
         button {
             background: #fff; color: #ff6b6b; border: none; padding: 15px 30px; border-radius: 50px;
@@ -141,7 +148,7 @@
         <!-- ЭКРАН 2: Приглашение -->
         <div class="card" id="screen2">
             <h2>Пойдёшь со мной на свидание? 💌</h2>
-            <div class="icon-placeholder">🐻</div>
+            <img src="mikonay.gif" alt="Миконай" class="sticker-img">
             <div style="position: relative; height: 60px;">
                 <button onclick="nextScreen(3)" style="position: absolute; left: 20%;">Да! 😊</button>
                 <button id="noBtn" onmouseover="runAway()" onclick="runAway()">Нет</button>
@@ -152,13 +159,14 @@
         <div class="card" id="screen3">
             <h2>Подожди, ты действительно сказала «да»? 😳</h2>
             <p class="subtitle">А я так волновалась 😅</p>
-            <div class="icon-placeholder">🐱</div>
+            <img src="peach-goma-peach-and-goma.gif" alt="Пич и Гома" class="sticker-img">
             <button onclick="nextScreen(4)">Да, да, ДА!</button>
         </div>
 
         <!-- ЭКРАН 4: Выбор даты и времени -->
         <div class="card" id="screen4">
             <h2>Когда тебе удобно? 📅</h2>
+            <img src="cute.gif" alt="Cute" class="sticker-img" style="width: 120px;">
             <div class="date-options">
                 <button id="satBtn" onclick="selectDay('Суббота')">Суббота <br><span id="satDate"></span></button>
                 <button id="sunBtn" onclick="selectDay('Воскресенье')">Воскресенье <br><span id="sunDate"></span></button>
@@ -172,7 +180,8 @@
         <div class="card" id="screen5">
             <h2>Чем займёмся? 😉</h2>
             <p class="subtitle">Выбирай, что по душе</p>
-            <div class="icon-placeholder">🐱🐻</div>
+            <p class="subtitle" style="font-size: 12px; opacity: 0.8; margin-top: -15px; margin-bottom: 15px;">* если деньги будут 💸</p>
+            <img src="miu.gif" alt="Miu" class="sticker-img" style="width: 120px;">
             <div class="activities-grid" id="activitiesGrid"></div>
             <button onclick="saveActivity()">Далее →</button>
         </div>
@@ -181,6 +190,7 @@
         <div class="card" id="screen6">
             <h2>Ура! Это свидание 💛</h2>
             <p class="subtitle" id="finalSubtitle">Жду тебя...</p>
+            <img src="bubu-dancing-dance.gif" alt="Bubu dancing" class="sticker-img">
             <div class="countdown" id="countdown">
                 <div class="countdown-item"><span class="num" id="days">0</span><span class="text">дней</span></div>
                 <div class="countdown-item"><span class="num" id="hours">0</span><span class="text">часов</span></div>
@@ -203,10 +213,10 @@
         // НАСТРОЙКИ АКТИВНОСТЕЙ (МЕНЯЙ ЗДЕСЬ)
         // ==========================================
         const ACTIVITIES = [
-            { id: 'coffee', name: 'Кофе', icon: '☕' },
-            { id: 'taco', name: 'Тако', icon: '🌮' },
-            { id: 'bowling', name: 'Боулинг', icon: '🎳' },
-            { id: 'boardgames', name: 'Настолки', icon: '🎲' }
+            { id: 'billiards', name: 'Бильярд', icon: '🎱' },
+            { id: 'cinema', name: 'Кино', icon: '🎬' },
+            { id: 'eat', name: 'Поесть', icon: '🍔' },
+            { id: 'drink', name: 'Попить', icon: '🍹' }
         ];
 
         // ==========================================
@@ -367,11 +377,10 @@
             document.getElementById('finalSubtitle').innerText = `Жду тебя ${selectedDay.toLowerCase()}! Нас ждет ${selectedActivity.name} ${selectedActivity.icon}`;
         }
 
-        // 10. Таймер обратного отсчёта (ИСПРАВЛЕНО)
+        // 10. Таймер обратного отсчёта
         function startCountdown() {
             if (countdownInterval) clearInterval(countdownInterval);
             
-            // Используем сохраненный объект даты, а не строку!
             let targetDate = new Date(selectedDateObj);
             const [hours, minutes] = selectedTime.split(':');
             targetDate.setHours(hours, minutes, 0, 0);
